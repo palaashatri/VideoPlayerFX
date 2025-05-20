@@ -1,6 +1,7 @@
 package com.example.videoplayerfx;
 
 import com.example.videoplayerfx.util.PlatformUtils;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

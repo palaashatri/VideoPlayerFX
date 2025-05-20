@@ -1,0 +1,26 @@
+/* macos.css */
+.root {
+    -fx-background-color: #2C2C2E;
+}
+
+.button {
+    -fx-background-color: #3C3F41;
+    -fx-text-fill: white;
+    -fx-font-family: "SF Pro";
+    -fx-background-radius: 8;
+    -fx-padding: 5 10 5 10;
+}
+
+.button:hover {
+    -fx-background-color: #4A4D50;
+}
+
+.slider .track {
+    -fx-background-color: #4A4D50;
+    -fx-background-radius: 5;
+}
+
+.slider .thumb {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 50%;
+}
