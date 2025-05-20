@@ -12,14 +12,14 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vlcj.version>4.9.0</vlcj.version>
+        <vlcj.version>LATEST</vlcj.version>
         <javafx.version>21</javafx.version>
         <jna.version>5.14.0</jna.version>
     </properties>
 
     <dependencies>
         <!-- JavaFX dependencies -->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
@@ -28,7 +28,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
-        </dependency>
+        </dependency> -->
         <!-- VLCJ dependencies -->
         <dependency>
             <groupId>uk.co.caprica</groupId>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>uk.co.caprica</groupId>
             <artifactId>vlcj-javafx</artifactId>
-            <version>1.0.2</version>
+            <version>LATEST</version>
         </dependency>
         <!-- JNA dependencies -->
         <dependency>
@@ -90,7 +90,7 @@
                                     <includes>
                                         <include>**/*</include>
                                     </includes>
-                                    <followSymlinks>true</followSymlinks>
+                                    <!-- <followSymlinks>true</followSymlinks> -->
                                 </resource>
                             </resources>
                         </configuration>

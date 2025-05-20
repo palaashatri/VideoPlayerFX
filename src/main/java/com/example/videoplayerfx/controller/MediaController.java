@@ -85,7 +85,7 @@ public class MediaController {
         File file = fileChooser.showOpenDialog(videoView.getScene().getWindow());
         if (file != null) {
             // Stop current playback
-            if (mediaPlayer.media().isPlaying()) {
+            if (mediaPlayer.media().status().isPlaying()) {
                 mediaPlayer.controls().stop();
             }
             // Reset UI
