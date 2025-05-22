@@ -12,6 +12,8 @@ import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.javafx.videosurface.ImageViewVideoSurface;
 import com.sun.jna.NativeLibrary;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.player.base.State;
 
 import java.io.File;
 
@@ -22,7 +24,7 @@ public class MediaController {
     @FXML private Slider seekSlider;
 
     private MediaPlayerFactory factory;
-    private MediaPlayer mediaPlayer;
+    private EmbeddedMediaPlayer mediaPlayer;
     private boolean isPlaying = false;
 
     @FXML
@@ -35,15 +37,14 @@ public class MediaController {
         // Configure LibVLC with platform-specific path and video output
         String vout = PlatformUtils.isWindows() ? "--vout=direct3d11" : PlatformUtils.isMac() ? "--vout=metal" : "--vout=opengl";
         try {
-            factory = new MediaPlayerFactory(new String[]{vout, "--plugin-path=" + libPath + "/plugins"});
-            mediaPlayer = factory.mediaPlayers().newEmbeddedMediaPlayer();
-            mediaPlayer.videoSurface().set(new ImageViewVideoSurface(videoView));
-        } catch (Exception e) {
-            System.err.println("Failed to initialize LibVLC: " + e.getMessage());
-            e.printStackTrace();
-            return;
-        }
-
+    factory = new MediaPlayerFactory(new String[]{vout, "--plugin-path=" + libPath + "/plugins"});
+    mediaPlayer = factory.mediaPlayers().newEmbeddedMediaPlayer();
+    mediaPlayer.videoSurface().set(new ImageViewVideoSurface(videoView));
+} catch (Exception e) {
+    System.err.println("Failed to initialize LibVLC: " + e.getMessage());
+    e.printStackTrace();
+    return;
+}
         // Bind seek slider to media position
         seekSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (seekSlider.isValueChanging()) {
@@ -85,7 +86,7 @@ public class MediaController {
         File file = fileChooser.showOpenDialog(videoView.getScene().getWindow());
         if (file != null) {
             // Stop current playback
-            if (mediaPlayer.media().status().isPlaying()) {
+            if (mediaPlayer.status().isPlaying()) {
                 mediaPlayer.controls().stop();
             }
             // Reset UI

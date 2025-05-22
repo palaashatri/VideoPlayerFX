@@ -12,7 +12,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vlcj.version>LATEST</vlcj.version>
+        <vlcj.version>4.8.2</vlcj.version>
         <javafx.version>21</javafx.version>
         <jna.version>5.14.0</jna.version>
     </properties>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>uk.co.caprica</groupId>
             <artifactId>vlcj-javafx</artifactId>
-            <version>LATEST</version>
+            <version>1.2.0</version>
         </dependency>
         <!-- JNA dependencies -->
         <dependency>
