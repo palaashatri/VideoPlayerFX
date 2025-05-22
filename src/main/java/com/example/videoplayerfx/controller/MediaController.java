@@ -1,27 +1,30 @@
 package com.example.videoplayerfx.controller;
 
+import java.io.File;
+
 import com.example.videoplayerfx.util.PlatformUtils;
+import com.sun.jna.NativeLibrary;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
+import uk.co.caprica.vlcj.javafx.videosurface.ImageViewVideoSurface;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
-import uk.co.caprica.vlcj.javafx.videosurface.ImageViewVideoSurface;
-import com.sun.jna.NativeLibrary;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-import uk.co.caprica.vlcj.player.base.State;
-
-import java.io.File;
 
 public class MediaController {
-    @FXML private ImageView videoView;
-    @FXML private Button openFileButton;
-    @FXML private Button playPauseButton;
-    @FXML private Slider seekSlider;
+    @FXML
+    private ImageView videoView;
+    @FXML
+    private Button openFileButton;
+    @FXML
+    private Button playPauseButton;
+    @FXML
+    private Slider seekSlider;
 
     private MediaPlayerFactory factory;
     private EmbeddedMediaPlayer mediaPlayer;
@@ -29,23 +32,40 @@ public class MediaController {
 
     @FXML
     public void initialize() {
-        // Configure JNA to find LibVLC libraries
-        String libPath = getClass().getResource("/" + PlatformUtils.getLibVlcPath()).getPath();
+        // Determine the path to the native libraries on the filesystem
+        String libPath;
+        try {
+            // When running from IDE, resources are in build/classes/libvlc
+            libPath = new File("target/classes/libvlc").getAbsolutePath();
+            if (!new File(libPath).exists()) {
+                // Fallback for Maven exec:java or other setups
+                libPath = new File("build/classes/java/main/libvlc").getAbsolutePath();
+            }
+            System.out.println("LibVLC path: " + libPath);
+            if (!new File(libPath).exists()) {
+                throw new RuntimeException("LibVLC path not found: " + libPath);
+            }
+        } catch (Exception e) {
+            System.err.println("Could not determine libvlc path: " + e.getMessage());
+            return;
+        }
+
+        // Add search paths for JNA
         NativeLibrary.addSearchPath("vlc", libPath);
         NativeLibrary.addSearchPath("vlccore", libPath);
 
         // Configure LibVLC with platform-specific path and video output
-        String vout = PlatformUtils.isWindows() ? "--vout=direct3d11" : PlatformUtils.isMac() ? "--vout=metal" : "--vout=opengl";
+        String vout = PlatformUtils.isWindows() ? "--vout=direct3d11"
+                : PlatformUtils.isMac() ? "--vout=metal" : "--vout=opengl";
         try {
-    factory = new MediaPlayerFactory(new String[]{vout, "--plugin-path=" + libPath + "/plugins"});
-    mediaPlayer = factory.mediaPlayers().newEmbeddedMediaPlayer();
-    mediaPlayer.videoSurface().set(new ImageViewVideoSurface(videoView));
-} catch (Exception e) {
-    System.err.println("Failed to initialize LibVLC: " + e.getMessage());
-    e.printStackTrace();
-    return;
-}
-        // Bind seek slider to media position
+            factory = new MediaPlayerFactory(new String[] { vout, "--plugin-path=" + libPath + "/plugins" });
+            mediaPlayer = factory.mediaPlayers().newEmbeddedMediaPlayer();
+            mediaPlayer.videoSurface().set(new ImageViewVideoSurface(videoView));
+        } catch (Exception e) {
+            System.err.println("Failed to initialize LibVLC: " + e.getMessage());
+            e.printStackTrace();
+            return;
+        } // Bind seek slider to media position
         seekSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (seekSlider.isValueChanging()) {
                 mediaPlayer.controls().setPosition(newVal.floatValue() / 100);
@@ -81,8 +101,7 @@ public class MediaController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Video File");
         fileChooser.getExtensionFilters().add(
-            new FileChooser.ExtensionFilter("Video Files", "*.mp4", "*.mkv", "*.avi", "*.mov", "*.wmv", "*.flv")
-        );
+                new FileChooser.ExtensionFilter("Video Files", "*.mp4", "*.mkv", "*.avi", "*.mov", "*.wmv", "*.flv"));
         File file = fileChooser.showOpenDialog(videoView.getScene().getWindow());
         if (file != null) {
             // Stop current playback
