@@ -19,7 +19,7 @@
 
     <dependencies>
         <!-- JavaFX dependencies -->
-        <!-- <dependency>
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
@@ -28,7 +28,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
-        </dependency> -->
+        </dependency>
         <!-- VLCJ dependencies -->
         <dependency>
             <groupId>uk.co.caprica</groupId>
