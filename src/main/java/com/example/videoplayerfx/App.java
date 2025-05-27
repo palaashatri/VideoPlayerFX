@@ -19,6 +19,10 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        // Ensure the native libraries are loaded before launching the application
+        String libVlcPath = "target/classes/libvlc";
+        System.setProperty("jna.library.path", libVlcPath);
+        System.setProperty("VLC_PLUGIN_PATH", libVlcPath + "/plugins");
         launch(args);
     }
 }

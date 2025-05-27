@@ -3,7 +3,7 @@ package com.example.videoplayerfx.controller;
 import java.io.File;
 
 import com.example.videoplayerfx.util.PlatformUtils;
-import com.sun.jna.NativeLibrary;
+import com.sun.jna.*;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
