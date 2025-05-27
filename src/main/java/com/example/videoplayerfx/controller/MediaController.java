@@ -36,11 +36,11 @@ public class MediaController {
         String libPath;
         try {
             // When running from IDE, resources are in build/classes/libvlc
-            libPath = new File("target/classes/libvlc").getAbsolutePath();
-            if (!new File(libPath).exists()) {
-                // Fallback for Maven exec:java or other setups
-                libPath = new File("build/classes/java/main/libvlc").getAbsolutePath();
-            }
+            libPath = new File("classes/libvlc").getAbsolutePath();
+            // if (!new File(libPath).exists()) {
+            //     // Fallback for Maven exec:java or other setups
+            //     libPath = new File("build/classes/java/main/libvlc").getAbsolutePath();
+            // }
             System.out.println("LibVLC path: " + libPath);
             if (!new File(libPath).exists()) {
                 throw new RuntimeException("LibVLC path not found: " + libPath);
